@@ -1,32 +1,53 @@
 #!/usr/bin/env python
+import pyfiglet # for banner
 import sys # for console arugments
 import socket # for connecting
+from datetime import datetime # for time
 
 # determine whether host has port open
 def port_scan(host, port):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
     try:
-        print(f'Connecting to {host} on port {port}')
+        s.settimeout(5)
         s.connect((host, port))
+
+    except TimeoutError:
+        print("Port " + str(port) + ": timeout reached")
+
     except:
-        return False;
+        print("Port " + str(port) + ": closed")
+
     else:
-        return True;
+        print("Port " + str(port) + ": open")
+
+
+banner = pyfiglet.figlet_format("Scanning . . .", font = "standard")
+print(banner)
 
 # host argument
 HOST = sys.argv[1]
 
+print("target: " + HOST)
+date_start = datetime.now()
+print("started at: " + str(date_start))
+print("\n")
+
 match len(sys.argv):
-# scan one chosen port
+# scan one port
     case 3:
         PORT = sys.argv[2]
-        print(port_scan(HOST,int(PORT)))
-# if 2 port arguments were passed, scan in range
+        port_scan(HOST,int(PORT))
+
+# scan in range
     case 4:
         PORT1 = sys.argv[2]
         PORT2 = sys.argv[3]
         
         for port in range(int(PORT1),int(PORT2)+1):
-            print(port_scan(HOST,port))
+            port_scan(HOST,port)
+
     case _:
-        print("0")
+        print("Invalid amount of arguments")
+
+print("Scanning finished in " + str(datetime.now() - date_start))
