@@ -49,39 +49,40 @@ def scanner(args_list):
 
     print(str(ports_closed) + " closed ports")
     
-# initial menu
-banner = pyfiglet.figlet_format("Scanning . . .", font = "standard")
-print(banner)
+if __name__ == '__main__':
+    # initial menu
+    banner = pyfiglet.figlet_format("Scanning . . .", font = "standard")
+    print(banner)
 
-host_var = sys.argv[1]
+    host_var = sys.argv[1]
 
-print("target: " + host_var)
-date_start = datetime.now()
-print("started at: " + str(date_start))
-print("\n")
+    print("target: " + host_var)
+    date_start = datetime.now()
+    print("started at: " + str(date_start))
+    print("\n")
 
-args_list = [] # list of argument tuples
+    args_list = [] # list of argument tuples
 
-match len(sys.argv):
-# scan one port
-    case 3:
-        port = int(sys.argv[2])
+    match len(sys.argv):
+    # scan one port
+        case 3:
+            port = int(sys.argv[2])
 
-        args_list.append((host_var,port))
+            args_list.append((host_var,port))
 
-        scanner(args_list)
+            scanner(args_list)
 
-# scan in range
-    case 4:
-        port_1 = int(sys.argv[2])
-        port_2 = int(sys.argv[3])
+    # scan in range
+        case 4:
+            port_1 = int(sys.argv[2])
+            port_2 = int(sys.argv[3])
 
-        for port in range(port_1, port_2 + 1):
-            args_list.append((host_var, port))
+            for port in range(port_1, port_2 + 1):
+                args_list.append((host_var, port))
 
-        scanner(args_list)
+            scanner(args_list)
 
-    case _:
-        print("Invalid amount of arguments")
+        case _:
+            print("Invalid amount of arguments")
 
-print("Scanning finished in " + str(datetime.now() - date_start))
+    print("Scanning finished in " + str(datetime.now() - date_start))
